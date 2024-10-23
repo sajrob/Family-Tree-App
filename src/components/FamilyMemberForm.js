@@ -100,28 +100,32 @@ function FamilyMemberForm({ members, setMembers, isEditing, memberToEdit }) {
           ? prevMembers.map((m) => (m.id === memberToEdit.id ? response : m))
           : [...prevMembers, response];
 
-        // Update reciprocal relationships
-        return updatedMembers.map((m) => {
-          if (
-            m.id !== response.id &&
-            response.relationships.some((r) => r.memberId === m.id)
-          ) {
-            const reciprocalRelationship = response.relationships.find(
-              (r) => r.memberId === m.id
-            );
-            const reciprocalType = getReciprocalRelationType(
-              reciprocalRelationship.type
-            );
-            return {
-              ...m,
-              relationships: [
-                ...m.relationships.filter((r) => r.memberId !== response.id),
-                { type: reciprocalType, memberId: response.id },
-              ],
-            };
-          }
-          return m;
-        });
+        // Update reciprocal relationships only if the response has relationships
+        if (response.relationships && response.relationships.length > 0) {
+          return updatedMembers.map((m) => {
+            if (
+              m.id !== response.id &&
+              response.relationships.some((r) => r.memberId === m.id)
+            ) {
+              const reciprocalRelationship = response.relationships.find(
+                (r) => r.memberId === m.id
+              );
+              const reciprocalType = getReciprocalRelationType(
+                reciprocalRelationship.type
+              );
+              return {
+                ...m,
+                relationships: [
+                  ...m.relationships.filter((r) => r.memberId !== response.id),
+                  { type: reciprocalType, memberId: response.id },
+                ],
+              };
+            }
+            return m;
+          });
+        }
+
+        return updatedMembers;
       });
 
       // Navigate to the tree page
@@ -274,6 +278,7 @@ function FamilyMemberForm({ members, setMembers, isEditing, memberToEdit }) {
                 </div>
               )}
               <div className="relative">
+                <p className="font-semibold mb-2">Add your image</p>
                 {renderImagePreview()}
                 <input
                   type="file"

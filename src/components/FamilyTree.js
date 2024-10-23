@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import placeholderImage from "../assets/placeholderPic.jpg";
 import SiteButton from "./SiteButton";
-//import FamilyTreeVisualization from "./FamilyTreeVisualization";
+import FamilyTreeVisualization from "./FamilyTreeVisualization";
 
 function FamilyTree({ members, setMembers }) {
   const navigate = useNavigate();
@@ -81,9 +81,9 @@ function FamilyTree({ members, setMembers }) {
       </button>
 
       {showVisualization ? (
-        //<FamilyTreeVisualization members={members} />
-        <div>Tree Visualization</div>
+        <FamilyTreeVisualization members={members} />
       ) : (
+        // <div>Tree Visualization</div>
         <div className="flex flex-col items-center justify-start min-h-screen bg-gradient-to-b from-white to-gray-200 p-4 overflow-x-hidden">
           <h2 className="text-3xl font-bold mb-6 text-blue-800">Family Tree</h2>
           {!hasMembers ? (
